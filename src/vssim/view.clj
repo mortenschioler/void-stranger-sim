@@ -12,18 +12,24 @@
   (or (square-type-str-reps (:square-type square))
       (throw (ex-info (format "No such square type: \"%s\"" (:square-type square)) {}))))
 
+(defn render-squares
+  [squares]
+  (->> squares
+       (map render-square)
+       (str/join)))
+
 (defn render-level
   [level]
   (let [[x _y] (:dim level)]
     (str (str/join "\n"
               (->> (partition x (:squares level))
-                   (map render-square)
-                   (str/join)))
+                   (map render-squares)))
          "\n")))
 ;; 
 
 (comment
   
   (print (render-square {:square-type :square/empty}))
-  
+  (print (render-level (vssim.core/random-level [3 3])))
+
   )
